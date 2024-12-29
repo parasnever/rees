@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { noteServices } from "../../services/note";
-import { NoteNotFound } from "../../services/note-errors";
+import { InvalidNotePayLoad, NoteNotFound } from "../../services/note-errors";
 import { AppError } from "../../error";
 
 export function deleteNoteController(
@@ -12,11 +12,19 @@ export function deleteNoteController(
     const noteId = Number(req.params.noteId);
 
     if (!noteId) {
+      const invalidPayLoadError = new InvalidNotePayLoad();
+      next(invalidPayLoadError);
+      return;
+    }
+
+    const note = noteServices.getById(noteId);
+    if (!note) {
       const noteNotFoundError = new NoteNotFound();
       next(noteNotFoundError);
       return;
     }
-    const note = noteServices.deleteNote(noteId);
+
+    noteServices.deleteNote(noteId);
     res.json({
       message: "Note deleted successfully",
     });
