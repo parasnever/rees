@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import { homeController } from "./controllers/home-controller";
 import { createNoteRoutes } from "./routes/note-route";
 import { AppError } from "./error";
-
+import "./db";
 const app = express();
 //json parser
 app.use(express.json());
