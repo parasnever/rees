@@ -27,12 +27,12 @@ const access: ConnectionOptions = {
   database: database,
 };
 
-const conn = mysql.createConnection(access);
+export const conn = mysql.createConnection(access);
 
-conn.query("SHOW DATABASES;", (err, result) => {
-  if (err) {
-    console.error("Failed to run the command", err);
-  } else {
-    console.log("result", result);
-  }
-});
+// conn.query("SHOW DATABASES;", (err, result) => {
+//   if (err) {
+//     console.error("Failed to run the command", err);
+//   } else {
+//     console.log("result", result);
+//   }
+// });

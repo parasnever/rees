@@ -8,8 +8,8 @@ export class NoteNotFound extends AppError {
 }
 
 export class InvalidNotePayLoad extends AppError {
-  constructor() {
-    super("Invalid Payload", 400);
+  constructor(meta: any) {
+    super("Invalid Payload", 400, meta);
     Error.captureStackTrace(this);
   }
 }

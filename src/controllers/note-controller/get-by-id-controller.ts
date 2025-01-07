@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { noteServices } from "../../services/note";
+import { noteService } from "../../services/note";
 
 export function getByIdController(
   req: Request,
@@ -7,7 +7,7 @@ export function getByIdController(
   next: NextFunction
 ) {
   const noteId = Number(req.params.noteId);
-  const note = noteServices.getById(noteId);
+  const note = noteService.getById(noteId);
 
   if (!note) {
     res.status(404).json({

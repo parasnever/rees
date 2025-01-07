@@ -16,6 +16,7 @@ app.use((error: AppError, req: Request, res: Response, next: NextFunction) => {
   console.error("Caught error::", error);
   res.status(error.status || 500).json({
     message: error.message,
+    meta: error.meta,
   });
 });
 
