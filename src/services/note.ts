@@ -67,15 +67,29 @@ function update(toUpdateNoteId: number, input: Omit<TNote, "id">) {
 
 // delete
 function deleteNote(toDeleteNoteId: number) {
-  const notesAfterDeletion = notes.filter((note) => {
-    if (note.id === toDeleteNoteId) {
-      return false;
-    } else {
-      return true;
-    }
-  });
+  // const notesAfterDeletion = notes.filter((note) => {
+  //   if (note.id === toDeleteNoteId) {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // });
 
-  notes = notesAfterDeletion;
+  // notes = notesAfterDeletion;
+  conn.query(
+    `
+  DELETE FROM notes 
+  WHERE 
+  id = ${toDeleteNoteId}
+  `,
+    (err, result) => {
+      if (err) {
+        console.error("Failed to delete", err);
+      } else {
+        console.log("deleted", result);
+      }
+    }
+  );
 }
 
 // getById
@@ -101,9 +115,12 @@ async function getById(noteId: number) {
   return rows[0];
 }
 
+export type TSort = "asc" | "desc";
 // getAll
-function getAll() {
-  return notes;
+async function getAll(sort: { sortKey: string; direction: TSort }) {
+  const conn = await connPromise;
+  const [rows] = await conn.execute(`SELECT * FROM notes`);
+  return rows;
 }
 
 export const noteService = {
