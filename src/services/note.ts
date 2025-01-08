@@ -116,10 +116,18 @@ async function getById(noteId: number) {
 }
 
 export type TSort = "asc" | "desc";
+export type TSortInput = { sortKey: string; direction: TSort };
+export type TPagination = {
+  page: number;
+  perPage: number;
+};
 // getAll
-async function getAll(sort: { sortKey: string; direction: TSort }) {
+async function getAll(sort: TSortInput, pagination: TPagination) {
+  const offset = (pagination.page - 1) * pagination.perPage;
   const conn = await connPromise;
-  const [rows] = await conn.execute(`SELECT * FROM notes`);
+  const [rows] = await conn.execute(
+    `SELECT * FROM notes ORDER BY ${sort.sortKey} ${sort.direction} LIMIT ${pagination.perPage} OFFSET  ${offset} `
+  );
   return rows;
 }
 
